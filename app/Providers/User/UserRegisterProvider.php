@@ -3,6 +3,8 @@
 namespace App\Providers\User;
 
 use App\Models\User;
+use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Facades\Auth;
 
 class UserRegisterProvider extends UserProvider
 {

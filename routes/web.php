@@ -2,7 +2,10 @@
 
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Models\User;
+use Illuminate\Auth\Events\Verified;
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
@@ -12,15 +15,20 @@ Route::get('/login', function () {
     return response()->json('ok');
 })->name('login');
 
-Route::get('/email/verify/{id}/{hash}', function (EmailVerificationRequest $request, $id, $hash) {
-    $request->fulfill();
 
-    if (!$request->user()->email_verified_at) {
-        $request->user()->update(['email_verified_at' => now()]);
+Route::get('/email/verify/{id}/{hash}', function ($id, $hash) {
+    $user = User::findOrFail($id);
+
+    if (! $user->hasVerifiedEmail() && $user->markEmailAsVerified()) {
+        event(new Verified($user));
+    }
+
+    if (!$user->email_verified_at) {
+        $user->update(['email_verified_at' => now()]);
     }
 
     return response()->json('Email verificado com sucesso');
-})->middleware(['auth', 'signed'])->name('verification.verify');
+})->name('verification.verify');
 
 
 Route::post('/email/verification-notification', function (Request $request) {
