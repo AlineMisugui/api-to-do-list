@@ -13,6 +13,7 @@ Route::controller(UserController::class)->group(function () {
     Route::post('/user', [UserController::class, 'register']);
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
     Route::get('/user', [UserController::class, 'getUser'])->middleware('auth:sanctum');
+    Route::put('/user/inactive', [UserController::class, 'inactive'])->middleware('auth:sanctum');
 });
 
 Route::get('/unauthorized', function () {

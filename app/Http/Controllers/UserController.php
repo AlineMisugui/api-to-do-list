@@ -38,6 +38,14 @@ class UserController extends Controller
         return response()->json($request->user(), 200);
     }
 
+    public function inactive(Request $request) : JsonResponse {
+        if ($request->user()->status === 'inactive') {
+            return response()->json(['message' => 'Usuário já está inativo'], 200);
+        }
+        $request->user()->update(['status' => 'inactive']);
+        return response()->json(['message' => 'Usuário inativado com sucesso'], 200);
+    }
+
     private function handleRequest($request, callable $callback) : JsonResponse {
         try {
             $response = $callback($request->validated());
