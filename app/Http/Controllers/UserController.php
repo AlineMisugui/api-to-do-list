@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\User\ChangePasswordRequest;
+use App\Http\Requests\User\ForgotPasswordRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserRegisterRequest;
 use App\Http\Requests\User\UserUpdateRequest;
@@ -11,6 +12,7 @@ use App\Providers\User\UserRegisterProvider;
 use App\Providers\User\UserUpdateProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class UserController extends Controller
@@ -51,8 +53,8 @@ class UserController extends Controller
         return $this->handleRequest($request, [$this->userUpdateProvider, 'changePassword']);
     }
 
-    public function forgotPassword(Request $request) : JsonResponse { // TODO
-        return response()->json(['message' => 'Em desenvolvimento'], 200);
+    public function forgotPassword(ForgotPasswordRequest $request) : JsonResponse {
+        return $this->handleRequest($request, [$this->userLoginProvider, 'forgotPassword']);
     }
 
     private function handleRequest($request, callable $callback) : JsonResponse {
