@@ -4,8 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserRegisterRequest;
+use App\Http\Requests\User\UserUpdateRequest;
 use App\Providers\User\UserLoginProvider;
 use App\Providers\User\UserRegisterProvider;
+use App\Providers\User\UserUpdateProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Throwable;
@@ -14,11 +16,13 @@ class UserController extends Controller
 {
     protected $userLoginProvider;
     protected $userRegisterProvider;
+    protected $userUpdateProvider;
 
-    public function __construct(UserLoginProvider $userLoginProvider, UserRegisterProvider $userRegisterProvider)
+    public function __construct(UserLoginProvider $userLoginProvider, UserRegisterProvider $userRegisterProvider, UserUpdateProvider $userUpdateProvider)
     {
         $this->userLoginProvider = $userLoginProvider;
         $this->userRegisterProvider = $userRegisterProvider;
+        $this->userUpdateProvider = $userUpdateProvider;
     }
 
     public function login(UserLoginRequest $request) : JsonResponse {
@@ -38,12 +42,8 @@ class UserController extends Controller
         return response()->json($request->user(), 200);
     }
 
-    public function inactive(Request $request) : JsonResponse {
-        if ($request->user()->status === 'inactive') {
-            return response()->json(['message' => 'Usuário já está inativo'], 200);
-        }
-        $request->user()->update(['status' => 'inactive']);
-        return response()->json(['message' => 'Usuário inativado com sucesso'], 200);
+    public function update(UserUpdateRequest $request) : JsonResponse {
+        return $this->handleRequest($request, [$this->userUpdateProvider, 'update']);
     }
 
     private function handleRequest($request, callable $callback) : JsonResponse {

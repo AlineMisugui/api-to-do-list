@@ -15,6 +15,9 @@ class UserProvider extends ServiceProvider
         $this->app->bind(UserRegisterProvider::class, function ($app) {
             return new UserRegisterProvider($app);
         });
+        $this->app->bind(UserUpdateProvider::class, function ($app) {
+            return new UserUpdateProvider($app);
+        });
     }
     public function searchUserByEmail(string $email): ?User
     {
@@ -25,5 +28,11 @@ class UserProvider extends ServiceProvider
         if (!$user->email_verified_at) {
             throw new Exception('Email não verificado', 401);
         }
+    }
+    public function verifyIfUserIsActive(User $user) : bool {
+        if ($user->status === 'inactive') {
+            return false;
+        }
+        return true;
     }
 }
