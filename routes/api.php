@@ -9,9 +9,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::controller(UserController::class)->group(function () {
+    Route::post('/login', [UserController::class, 'login']);
     Route::post('/user', [UserController::class, 'register']);
+    Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
+    Route::get('/user', [UserController::class, 'getUser'])->middleware('auth:sanctum');
 });
 
-Route::controller(UserController::class)->group(function () {
-    Route::post('/login', [UserController::class, 'login']);
-})->middleware(['verified']);
+Route::get('/unauthorized', function () {
+    return response()->json(['error' => 'Não autorizado'], 401);
+})->name('unauthorized');

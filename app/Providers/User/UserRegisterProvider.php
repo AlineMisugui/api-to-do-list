@@ -11,7 +11,8 @@ class UserRegisterProvider extends UserProvider
         $user = $this->createUser($request);
         $user->sendEmailVerificationNotification();
         return [
-            'user' => $user->email
+            'user' => $user->email,
+            'message' => 'Email de verificação enviado com sucesso'
         ];
     }
 

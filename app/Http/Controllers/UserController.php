@@ -7,6 +7,7 @@ use App\Http\Requests\User\UserRegisterRequest;
 use App\Providers\User\UserLoginProvider;
 use App\Providers\User\UserRegisterProvider;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Throwable;
 
 class UserController extends Controller
@@ -28,10 +29,19 @@ class UserController extends Controller
         return $this->handleRequest($request, [$this->userRegisterProvider, 'registerUser']);
     }
 
+    public function logout(Request $request ) : JsonResponse {
+        $request->user()->currentAccessToken()->delete();
+        return response()->json(['message' => 'Logout realizado com sucesso'], 200);
+    }
+
+    public function getUser(Request $request) : JsonResponse {
+        return response()->json($request->user(), 200);
+    }
+
     private function handleRequest($request, callable $callback) : JsonResponse {
         try {
             $response = $callback($request->validated());
-            return response()->json([$response], 200);
+            return response()->json($response, 200);
         } catch (Throwable $th) {
             return response()->json(['error' => $th->getMessage()], $th->getCode() < 500 ? $th->getCode() : 500);
         }

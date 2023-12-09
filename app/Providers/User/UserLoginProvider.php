@@ -14,6 +14,7 @@ class UserLoginProvider extends UserProvider
         if (!$user) {
             throw new Exception('Unauthorized', 401);
         }
+        $this->verifyUserEmail($user);
         $this->checkPassword($request['password'], $user);
         $token = $this->generateToken($user);
         return [
@@ -21,7 +22,7 @@ class UserLoginProvider extends UserProvider
             'token' => $token
         ];
     }
-    
+
     private function checkPassword(string $password_given , User $user): void
     {
         $passwordIsValid = password_verify($password_given, $user->password);
