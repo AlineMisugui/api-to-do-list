@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\User\ChangePasswordRequest;
 use App\Http\Requests\User\UserLoginRequest;
 use App\Http\Requests\User\UserRegisterRequest;
 use App\Http\Requests\User\UserUpdateRequest;
@@ -44,6 +45,14 @@ class UserController extends Controller
 
     public function update(UserUpdateRequest $request) : JsonResponse {
         return $this->handleRequest($request, [$this->userUpdateProvider, 'update']);
+    }
+
+    public function changePassword(ChangePasswordRequest $request) : JsonResponse {
+        return $this->handleRequest($request, [$this->userUpdateProvider, 'changePassword']);
+    }
+
+    public function forgotPassword(Request $request) : JsonResponse { // TODO
+        return response()->json(['message' => 'Em desenvolvimento'], 200);
     }
 
     private function handleRequest($request, callable $callback) : JsonResponse {

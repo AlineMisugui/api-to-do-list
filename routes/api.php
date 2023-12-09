@@ -14,6 +14,8 @@ Route::controller(UserController::class)->group(function () {
     Route::get('/logout', [UserController::class, 'logout'])->middleware('auth:sanctum');
     Route::get('/user', [UserController::class, 'getUser'])->middleware('auth:sanctum');
     Route::put('/user/update', [UserController::class, 'update'])->middleware('auth:sanctum');
+    Route::put('/change-password', [UserController::class, 'changePassword'])->middleware('auth:sanctum');
+    Route::post('/forgot-password', [UserController::class, 'forgotPassword']); // TODO
 });
 
 Route::get('/unauthorized', function () {
