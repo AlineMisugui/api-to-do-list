@@ -31,12 +31,6 @@ class TaskGroupUpdateProvider extends TaskGroupProvider
         return $taskGroup;
     }
 
-    private function verifyIfGroupBelongsToUser(int $userId, int $realUserId) : void {
-        if ($userId !== $realUserId) {
-            throw new \Exception('User not authorized', 401);
-        }
-    }
-
     private function update(TaskGroup $taskGroup, array $data) : ?TaskGroup {
         $taskGroup->name = $data['name'] ?? $taskGroup->name;
         $taskGroup->description = $data['description'] ?? $taskGroup->description;
