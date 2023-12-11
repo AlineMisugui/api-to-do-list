@@ -12,7 +12,6 @@ use App\Providers\User\UserRegisterProvider;
 use App\Providers\User\UserUpdateProvider;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Mail;
 use Throwable;
 
 class UserController extends Controller
