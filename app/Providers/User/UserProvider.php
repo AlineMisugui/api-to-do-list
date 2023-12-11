@@ -29,7 +29,13 @@ class UserProvider extends ServiceProvider
             throw new Exception('Email não verificado', 401);
         }
     }
-    public function verifyIfUserIsActive(User $user) : bool {
+
+    public static function findUserById(int $id): ?User
+    {
+        return User::where('id', $id)->first();
+    }
+
+    public static function verifyIfUserIsActive(User $user) : bool {
         if ($user->status === 'inactive') {
             return false;
         }
