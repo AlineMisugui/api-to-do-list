@@ -10,9 +10,6 @@ use Illuminate\Support\ServiceProvider;
 
 class TaskProvider extends ServiceProvider
 {
-    /**
-     * Register services.
-     */
     public function register(): void
     {
         $this->app->bind(TaskProvider::class, function ($app) {
@@ -20,6 +17,12 @@ class TaskProvider extends ServiceProvider
         });
         $this->app->bind(TaskCreateProvider::class, function ($app) {
             return new TaskCreateProvider($app);
+        });
+        $this->app->bind(TaskUpdateProvider::class, function ($app) {
+            return new TaskUpdateProvider($app);
+        });
+        $this->app->bind(TaskDeleteProvider::class, function ($app) {
+            return new TaskDeleteProvider($app);
         });
     }
 
@@ -55,12 +58,18 @@ class TaskProvider extends ServiceProvider
         return $tasks->toArray();
     }
 
-    public function findTask(array $dados): array
+    protected function findTaskById(int $id): ?Task
     {
-        $task = Task::where('id', $dados['id'])->first();
+        $task = Task::where('id', $id)->first();
         if (!$task) {
             throw new Exception('Task not found', 404);
         }
+        return $task;
+    }
+
+    public function findTask(array $dados): array
+    {
+        $task = $this->findTaskById($dados['id']);
         $this->verifyifTaskBelongsToUser($task, $dados['user_id']);
         $taskGroup = $this->findTaskGroupByTask($task);
         $dataTask = $this->formatData($task, $taskGroup);
