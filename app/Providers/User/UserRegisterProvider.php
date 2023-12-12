@@ -10,10 +10,12 @@ class UserRegisterProvider extends UserProvider
     {
         $user = $this->createUser($request);
         $user->sendEmailVerificationNotification();
-        return [
+        $return['data'] = [
             'user' => $user->email,
             'message' => 'Email de verificação enviado com sucesso'
         ];
+        $return['status'] = 201;
+        return $return;
     }
 
     private function createUser(array $request)

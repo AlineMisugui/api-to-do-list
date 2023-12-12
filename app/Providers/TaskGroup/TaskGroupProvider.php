@@ -45,16 +45,19 @@ class TaskGroupProvider extends ServiceProvider
         if (!$taskGroup) {
             throw new Exception('Task Group not found', 404);
         }
-        return $taskGroup->only(['id', 'name', 'description']);
+        $return['data'] = $taskGroup->only(['id', 'name', 'description']);
+        return $return;
     }
 
     public function getAllTaskGroupsForUser(array $data): array
     {
         $user_id = $data['user_id'];
         $taskGroups = TaskGroup::where('user_id', $user_id)->get();
-        return $taskGroups->map(function ($taskGroup) {
+        $return['data'] = $taskGroups->map(function ($taskGroup) {
             return $taskGroup->only(['id', 'name', 'description']);
         })->toArray();
+        $return['status'] = 200;
+        return $return;
     }
 
     public function deleteTaskGroupForUser(array $data): array
@@ -70,7 +73,9 @@ class TaskGroupProvider extends ServiceProvider
             throw new Exception('Task Group not found', 404);
         }
         $taskGroup->delete();
-        return ['message' => 'Task Group deleted successfully'];
+        $return['data'] = ['message' => 'Task Group deleted successfully'];
+        $return['status'] = 200;
+        return $return;
     }
 
     public static function verifyIfGroupBelongsToUser(int $userId, int $realUserId): void

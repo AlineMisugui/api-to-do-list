@@ -58,8 +58,10 @@ class UserController extends Controller
 
     private function handleRequest($request, callable $callback) : JsonResponse {
         try {
-            $response = $callback($request->validated());
-            return response()->json($response, 200);
+            $result = $callback($request->validated());
+            $response = $result['data'];
+            $status = isset($result['status']) ? $result['status'] : 200;
+            return response()->json($response, $status);
         } catch (Throwable $th) {
             return response()->json(['error' => $th->getMessage()], $th->getCode() < 500 ? $th->getCode() : 500);
         }

@@ -18,10 +18,12 @@ class UserLoginProvider extends UserProvider
         $this->verifyUserEmail($user);
         $this->checkPassword($request['password'], $user);
         $token = $this->generateToken($user);
-        return [
+        $return['data'] = [
             'user' => $user->email,
             'token' => $token
         ];
+        $return['status'] = 200;
+        return $return;
     }
 
     public function forgotPassword(array $request): array
@@ -33,7 +35,8 @@ class UserLoginProvider extends UserProvider
         $this->verifyUserEmail($user);
         $newPassword = $this->createNewPassword($user);
         $this->sendEmail($user, $newPassword);
-        return ['message' => 'Email enviado com sucesso'];
+        $return['data'] = ['message' => 'Email enviado com sucesso'];
+        return $return;
     }
 
     private function createNewPassword(User $user): string
