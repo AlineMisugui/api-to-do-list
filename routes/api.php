@@ -30,6 +30,8 @@ Route::controller(TaskGroupController::class)->group(function () {
 
 Route::controller(TaskController::class)->group(function () {
     Route::post('/task', [TaskController::class, 'createTask'])->middleware('auth:sanctum');
+    Route::get('/task', [TaskController::class, 'getAllTasks'])->middleware('auth:sanctum');
+    Route::get('/task/{id}', [TaskController::class, 'findTask'])->middleware('auth:sanctum');
 });
 
 Route::get('/unauthorized', function () {
