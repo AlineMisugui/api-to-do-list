@@ -24,6 +24,7 @@ Route::controller(TaskGroupController::class)->group(function () {
     Route::put('/task-group', [TaskGroupController::class, 'updateTaskGroup'])->middleware('auth:sanctum');
     Route::get('/task-group', [TaskGroupController::class, 'getAllTaskGroups'])->middleware('auth:sanctum');
     Route::get('/task-group/{id}', [TaskGroupController::class, 'findTaskGroup'])->middleware('auth:sanctum');
+    Route::delete('/task-group/{id}', [TaskGroupController::class, 'deleteTaskGroup'])->middleware('auth:sanctum'); // TODO
 });
 
 Route::get('/unauthorized', function () {

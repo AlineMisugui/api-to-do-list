@@ -52,6 +52,14 @@ class TaskGroupController extends Controller
         return $this->handleRequest($data, [$this->taskGroupProvider, 'getAllTaskGroupsForUser']);
     }
 
+    public function deleteTaskGroup(int $id) {
+        $data = [
+            'group_id' => $id,
+            'user_id' => request()->user()->id
+        ];
+        return $this->handleRequest($data, [$this->taskGroupProvider, 'deleteTaskGroupForUser']);
+    }
+
     private function handleRequest($data, callable $callback) : JsonResponse {
         try {
             $response = $callback($data);

@@ -3,6 +3,7 @@
 namespace App\Providers\TaskGroup;
 
 use App\Models\TaskGroup;
+use Exception;
 use Illuminate\Support\ServiceProvider;
 
 class TaskGroupProvider extends ServiceProvider
@@ -31,28 +32,47 @@ class TaskGroupProvider extends ServiceProvider
     public function findTaskGroupForUser(array $data): ?array
     {
         $group_id = $data['group_id'];
-        $userId = $data['user_id'];
+        $user_id = $data['user_id'];
         $taskGroup = $this->findTaskGroupById($group_id);
-        $this->verifyIfGroupBelongsToUser($userId, $taskGroup->user_id);
         if (!$taskGroup) {
-            throw new \Exception('Task Group not found', 404);
+            throw new Exception('Task Group not found', 404);
+        }
+        $this->verifyIfGroupBelongsToUser($user_id, $taskGroup->user_id);
+        if (!$taskGroup) {
+            throw new Exception('Task Group not found', 404);
         }
         return $taskGroup->only(['id', 'name', 'description']);
     }
 
     public function getAllTaskGroupsForUser(array $data): array
     {
-        $userId = $data['user_id'];
-        $taskGroups = TaskGroup::where('user_id', $userId)->get();
+        $user_id = $data['user_id'];
+        $taskGroups = TaskGroup::where('user_id', $user_id)->get();
         return $taskGroups->map(function ($taskGroup) {
             return $taskGroup->only(['id', 'name', 'description']);
         })->toArray();
     }
 
+    public function deleteTaskGroupForUser(array $data): array
+    {
+        $group_id = $data['group_id'];
+        $user_id = $data['user_id'];
+        $taskGroup = $this->findTaskGroupById($group_id);
+        if (!$taskGroup) {
+            throw new Exception('Task Group not found', 404);
+        }
+        $this->verifyIfGroupBelongsToUser($user_id, $taskGroup->user_id);
+        if (!$taskGroup) {
+            throw new Exception('Task Group not found', 404);
+        }
+        $taskGroup->delete();
+        return ['message' => 'Task Group deleted successfully'];
+    }
+
     protected function verifyIfGroupBelongsToUser(int $userId, int $realUserId): void
     {
         if ($userId !== $realUserId) {
-            throw new \Exception('User not authorized', 401);
+            throw new Exception('User not authorized', 401);
         }
     }
 }
