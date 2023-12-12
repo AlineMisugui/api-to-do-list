@@ -7,8 +7,6 @@ use App\Http\Requests\TaskGroup\TaskGroupUpdateRequest;
 use App\Providers\TaskGroup\TaskGroupCreateProvider;
 use App\Providers\TaskGroup\TaskGroupProvider;
 use App\Providers\TaskGroup\TaskGroupUpdateProvider;
-use App\Providers\User\UserProvider;
-use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\JsonResponse;
 use Throwable;
 

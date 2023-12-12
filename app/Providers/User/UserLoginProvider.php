@@ -3,7 +3,6 @@
 namespace App\Providers\User;
 
 use App\Models\User;
-use Carbon\Laravel\ServiceProvider;
 use Exception;
 use Illuminate\Support\Facades\Mail;
 
