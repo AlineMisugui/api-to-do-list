@@ -171,6 +171,7 @@ return [
         App\Providers\User\UserLoginProvider::class,
         App\Providers\User\UserProvider::class,
         App\Providers\TaskGroup\TaskGroupProvider::class,
+        App\Providers\Task\TaskProvider::class,
         App\Providers\User\UserRegisterProvider::class,
     ])->toArray(),
 

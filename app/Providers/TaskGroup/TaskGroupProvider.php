@@ -24,9 +24,13 @@ class TaskGroupProvider extends ServiceProvider
         });
     }
 
-    protected function findTaskGroupById(int $id): ?TaskGroup
+    public static function findTaskGroupById(int $id): ?TaskGroup
     {
-        return TaskGroup::find($id);
+        $taskGroup = TaskGroup::find($id);
+        if (!$taskGroup) {
+            throw new Exception('Task Group not found', 404);
+        }
+        return $taskGroup;
     }
 
     public function findTaskGroupForUser(array $data): ?array
@@ -69,7 +73,7 @@ class TaskGroupProvider extends ServiceProvider
         return ['message' => 'Task Group deleted successfully'];
     }
 
-    protected function verifyIfGroupBelongsToUser(int $userId, int $realUserId): void
+    public static function verifyIfGroupBelongsToUser(int $userId, int $realUserId): void
     {
         if ($userId !== $realUserId) {
             throw new Exception('User not authorized', 401);
