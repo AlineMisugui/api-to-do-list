@@ -22,8 +22,8 @@ class TaskUpdateRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'description' => 'string',
-            'status' => 'in:pending,completed',
+            'description' => 'required|string',
+            'status' => 'required|in:pending,completed',
             'deadline' => 'date',
         ];
     }

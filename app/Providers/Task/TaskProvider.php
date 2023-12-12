@@ -55,7 +55,8 @@ class TaskProvider extends ServiceProvider
         foreach ($tasks as $task) {
             $task->task_group = json_decode($task->task_group);
         }
-        return $tasks->toArray();
+        $return['data'] = $tasks->toArray();
+        return $return;
     }
 
     protected function findTaskById(int $id): ?Task
@@ -73,7 +74,8 @@ class TaskProvider extends ServiceProvider
         $this->verifyifTaskBelongsToUser($task, $dados['user_id']);
         $taskGroup = $this->findTaskGroupByTask($task);
         $dataTask = $this->formatData($task, $taskGroup);
-        return $dataTask;
+        $return['data'] = $dataTask;
+        return $return;
     }
 
     private function formatData(Task $task, TaskGroup $taskGroup): array

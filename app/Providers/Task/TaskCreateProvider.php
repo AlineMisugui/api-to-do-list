@@ -21,6 +21,8 @@ class TaskCreateProvider extends ServiceProvider
         TaskGroupProvider::verifyIfGroupBelongsToUser($data['user_id'], $taskGroup->user_id);
         $newTask = Task::create($data);
         $newTask->setAttribute('group_name', $taskGroup->name);
-        return $newTask->only(['id', 'description', 'group_name']);
+        $return['data'] = $newTask->only(['id', 'description', 'group_name']);
+        $return['status'] = 201;
+        return $return;
     }
 }

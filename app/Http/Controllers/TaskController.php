@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\Task\TaskCreateRequest;
 use App\Http\Requests\Task\TaskUpdateRequest;
-use App\Models\Task;
 use App\Providers\Task\TaskCreateProvider;
 use App\Providers\Task\TaskDeleteProvider;
 use App\Providers\Task\TaskProvider;
@@ -58,8 +57,10 @@ class TaskController extends Controller
 
     private function handleRequest($data, callable $callback) : JsonResponse {
         try {
-            $response = $callback($data);
-            return response()->json($response, 200);
+            $result = $callback($data);
+            $response = $result['data'];
+            $status = isset($result['status']) ? $result['status'] : 200;
+            return response()->json($response, $status);
         } catch (Throwable $th) {
             return response()->json(['error' => $th->getMessage()], $th->getCode() < 500 ? $th->getCode() : 500);
         }

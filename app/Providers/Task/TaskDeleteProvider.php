@@ -9,6 +9,7 @@ class TaskDeleteProvider extends TaskProvider
         $task = $this->findTaskById($data['id']);
         $this->verifyifTaskBelongsToUser($task, $data['user_id']);
         $task->delete();
-        return ['message' => 'Task deleted successfully'];
+        $return['data'] = ['message' => 'Task deleted successfully'];
+        return $return;
     }
 }

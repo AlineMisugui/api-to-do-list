@@ -26,7 +26,6 @@ Route::controller(TaskGroupController::class)->group(function () {
     Route::get('/task-group', [TaskGroupController::class, 'getAllTaskGroups'])->middleware('auth:sanctum');
     Route::get('/task-group/{id}', [TaskGroupController::class, 'findTaskGroup'])->middleware('auth:sanctum');
     Route::delete('/task-group/{id}', [TaskGroupController::class, 'deleteTaskGroup'])->middleware('auth:sanctum');
-    // TODO: Conferir se está deletando as tasks ao deletar o grupo
 });
 
 Route::controller(TaskController::class)->group(function () {
@@ -34,7 +33,7 @@ Route::controller(TaskController::class)->group(function () {
     Route::get('/task', [TaskController::class, 'getAllTasks'])->middleware('auth:sanctum');
     Route::get('/task/{id}', [TaskController::class, 'findTask'])->middleware('auth:sanctum');
     Route::put('/task/{id}', [TaskController::class, 'updateTask'])->middleware('auth:sanctum');
-    Route::delete('/task/{id}', [TaskController::class, 'deleteTask'])->middleware('auth:sanctum'); // TODO
+    Route::delete('/task/{id}', [TaskController::class, 'deleteTask'])->middleware('auth:sanctum'); 
 });
 
 Route::get('/unauthorized', function () {
